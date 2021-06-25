@@ -1,0 +1,26 @@
+version: "3.7"
+
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: trust
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - $PWD:/trainers_api
+    environment:
+      DATABASE_HOST: db 
+      DATABASE_USER: postgres
+      DATABASE_NAME: trainers_api
+    depends_on:
+      - db 
+
+volumes:
+  data:
